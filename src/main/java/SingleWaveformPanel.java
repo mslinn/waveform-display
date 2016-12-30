@@ -6,7 +6,6 @@ public class SingleWaveformPanel extends JPanel {
     private static final Color REFERENCE_LINE_COLOR = Color.black;
     private static final Color WAVEFORM_COLOR = Color.red;
 
-
     private AudioInfo helper;
     private int channelIndex;
 
@@ -24,13 +23,11 @@ public class SingleWaveformPanel extends JPanel {
         g.drawLine(0, lineHeight, (int)getWidth(), lineHeight);
 
         drawWaveform(g, helper.getAudio(channelIndex));
-
     }
 
     private void drawWaveform(Graphics g, int[] samples) {
-        if (samples == null) {
+        if (samples == null)
             return;
-        }
 
         int oldX = 0;
         int oldY = (int) (getHeight() / 2);
@@ -40,7 +37,6 @@ public class SingleWaveformPanel extends JPanel {
         g.setColor(WAVEFORM_COLOR);
 
         int t = 0;
-
         for (t = 0; t < increment; t += increment) {
             g.drawLine(oldX, oldY, xIndex, oldY);
             xIndex++;

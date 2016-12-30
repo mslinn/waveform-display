@@ -1,3 +1,4 @@
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -10,35 +11,40 @@ public class WaveformDisplay {
             System.err.println("Please supply the name of the wave file to display");
             System.exit(-1);
         }
+
+        String fileName = args[0];
         WaveformDisplay wds = new WaveformDisplay();
         try { // first look for the file in resources/
-          wds.run(wds.getClass().getClassLoader().getResource(args[0]).getFile());
+          String fileNameRes = wds.getClass().getClassLoader().getResource(fileName).getFile();
+          wds.run(fileNameRes);
         } catch (Exception e) { // now look for the file in the current directory
-            wds.run(args[0]);
+            try {
+                System.err.println("Error: " + e.getMessage());
+                wds.run(fileName);
+            } catch (Exception e2) {
+                System.err.println("Error reading " + fileName + ".\n" + e2.getMessage());
+                System.exit(1);
+            }
         }
     }
 
-    private void run(String file) {
+    private void run(String filePath) throws UnsupportedAudioFileException, IOException {
+        JFrame frame = new JFrame("Waveform Display");
+        frame.setBounds(200,200, 500, 350);
 
-        try {
-            JFrame frame = new JFrame("Waveform Display Simulator");
-            frame.setBounds(200,200, 500, 350);
+        System.out.println("Looking for " + filePath);
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(filePath)));
 
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream (new FileInputStream(file)));
+        WaveformPanelContainer container = new WaveformPanelContainer();
+        container.setAudioToDisplay(audioInputStream);
 
-            WaveformPanelContainer container = new WaveformPanelContainer();
-            container.setAudioToDisplay(audioInputStream);
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.getContentPane().add(container, BorderLayout.CENTER);
 
-            frame.getContentPane().setLayout(new BorderLayout());
-            frame.getContentPane().add(container, BorderLayout.CENTER);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-            frame.setVisible(true);
-            frame.validate();
-            frame.repaint();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        frame.setVisible(true);
+        frame.validate();
+        frame.repaint();
     }
 }

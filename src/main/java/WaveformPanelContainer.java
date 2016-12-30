@@ -11,7 +11,6 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 class WaveformPanelContainer extends JPanel {
-
     WaveformPanelContainer() {
         setLayout(new GridLayout(0, 1));
     }
@@ -35,6 +34,4 @@ class WaveformPanelContainer extends JPanel {
 
         return panel;
     }
-
-
 }

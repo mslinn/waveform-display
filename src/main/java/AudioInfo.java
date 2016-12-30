@@ -6,7 +6,7 @@ class AudioInfo {
     private AudioInputStream audioInputStream;
     private int[][] samplesContainer;
 
-    //cached values
+    // cached values
     private int sampleMax = 0;
     private int sampleMin = 0;
     private double biggestSample;
