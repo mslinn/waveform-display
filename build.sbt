@@ -28,6 +28,8 @@ scalacOptions in (Compile, doc) ++= baseDirectory.map {
   )
 }.value
 
+resourceDirectory in Runtime := baseDirectory.value / "resources"
+
 javacOptions ++= Seq(
   "-Xlint:deprecation",
   "-Xlint:unchecked",
