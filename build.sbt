@@ -1,3 +1,4 @@
+
 organization := "com.micronautics"
 
 name := "waveform-display"
@@ -38,11 +39,20 @@ javacOptions ++= Seq(
   "-g:vars"
 )
 
+resourceDirectory in Runtime := baseDirectory.value / "resources"
+
 resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
 )
+
+mainClass in assembly := Some("WaveformDisplay")
+assemblyMergeStrategy in assembly := {
+  case m if m.toLowerCase.endsWith("manifest.mf")          => MergeStrategy.discard
+  case m if m.toLowerCase.matches("meta-inf.*\\.sf$")      => MergeStrategy.discard
+  case _                                                   => MergeStrategy.first
+}
 
 logLevel := Level.Warn
 
